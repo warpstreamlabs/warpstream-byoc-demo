@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: warpstream-byoc-demo
+spec:
+  containers:
+  - name: warpstream-byoc-demo
+    image: simonwarpstream/warpstream-byoc-demo:latest
+    imagePullPolicy: Always
+    command: ["sleep", "infinity"]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-config
+data:
+  producer.properties: |
+    bootstrap.servers=warpstream-agent:9092
+  consumer.properties: |
+    bootstrap.servers=warpstream-agent:9092
+    group.id=my-group
+    auto.offset.reset=earliest
