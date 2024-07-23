@@ -43,13 +43,14 @@ Release the WarpStream agent Helm chart and upload credentials to reach the S3 b
 3. Check the health of the Kubernetes pods running the WarpStream agent.
     - `kubectl get pods | grep warpstream`
     - `kubectl logs $warpstream_pod_name | less`
-    - The pods should be failing with AccessDenied errors. This is expected: they’re still missing access to the S3 bucket.
+    - The pods should be failing with `AccessDenied` errors. This is expected: they’re still missing access to the S3 bucket.
         - The pods may be failing to start due to insufficient resources. If so, add more nodes to your Kubernetes cluster or increase your nodes’ instance size. See the WarpStream documentation on [instance type selection][].
 4. Pass AWS credentials to the WarpStream pods as environment variables. Use the credentials obtained by assuming the AWS role whose ARN was printed by terraform apply.
     - `aws sts assume-role --role-arn $role_arn --role-session-name warpstream-byoc-demo`
     - `kubectl set env deployment/warpstream-agent AWS_ACCESS_KEY_ID=$access_key_id AWS_SECRET_ACCESS_KEY=$secret_access_key AWS_SESSION_TOKEN=$session_token`
 
-[!WARNING] For simplicity we’re using insecure environment variables to pass sensitive values. In production we would use a secrets manager. Or better yet, we would associate the IAM role to a Kubernetes service account. (See [Kubernetes docs][] and [AWS docs][].)
+[!WARNING]
+For simplicity we’re using insecure environment variables to pass sensitive values. In production we would use a secrets manager. Or better yet, we would associate the IAM role to a Kubernetes service account. (See [Kubernetes docs][] and [AWS docs][].)
 
 5. Give the WarpStream agent pods time to back off from the authorization errors and then check their logs again. Their status should be Running and their logs should no longer contain errors. If so, you have successfully deployed the WarpStream agent.
 
@@ -57,7 +58,8 @@ Release the WarpStream agent Helm chart and upload credentials to reach the S3 b
 
 Observe the agent in action by producing and consuming messages.
 
-[!NOTE] These steps assume your Kubernetes nodes run on amd64 or arm64 Linux architectures. You can confirm by running `kubectl get nodes -o yaml | grep architecture`. If your nodes run a different architecture, you’ll need to provision new nodes running amd64 or arm64.
+[!NOTE]
+These steps assume your Kubernetes nodes run on amd64 or arm64 Linux architectures. You can confirm by running `kubectl get nodes -o yaml | grep architecture`. If your nodes run a different architecture, you’ll need to provision new nodes running amd64 or arm64.
 
 1. Provision a pod with the Kafka command line tools installed using the provided configuration file.
     - `kubectl apply -f warpstream-byoc-demo-pod.yaml`
