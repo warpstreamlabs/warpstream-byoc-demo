@@ -49,8 +49,7 @@ Release the WarpStream agent Helm chart and upload credentials to reach the S3 b
     - `aws sts assume-role --role-arn $role_arn --role-session-name warpstream-byoc-demo`
     - `kubectl set env deployment/warpstream-agent AWS_ACCESS_KEY_ID=$access_key_id AWS_SECRET_ACCESS_KEY=$secret_access_key AWS_SESSION_TOKEN=$session_token`
 
-[!WARNING]
-For simplicity we’re using insecure environment variables to pass sensitive values. In production we would use a secrets manager. Or better yet, we would associate the IAM role to a Kubernetes service account. (See [Kubernetes docs][] and [AWS docs][].)
+**For simplicity, we’re using insecure environment variables to pass sensitive values. In production we would use a secrets manager. Or better yet, we would associate the IAM role to a Kubernetes service account. (See [Kubernetes docs][] and [AWS docs][].)**
 
 5. Give the WarpStream agent pods time to back off from the authorization errors and then check their logs again. Their status should be Running and their logs should no longer contain errors. If so, you have successfully deployed the WarpStream agent.
 
@@ -58,8 +57,7 @@ For simplicity we’re using insecure environment variables to pass sensitive va
 
 Observe the agent in action by producing and consuming messages.
 
-[!NOTE]
-These steps assume your Kubernetes nodes run on amd64 or arm64 Linux architectures. You can confirm by running `kubectl get nodes -o yaml | grep architecture`. If your nodes run a different architecture, you’ll need to provision new nodes running amd64 or arm64.
+*These steps assume your Kubernetes nodes run on amd64 or arm64 Linux architectures. You can confirm by running `kubectl get nodes -o yaml | grep architecture`. If your nodes run a different architecture, you’ll need to provision new nodes running amd64 or arm64.*
 
 1. Provision a pod with the Kafka command line tools installed using the provided configuration file.
     - `kubectl apply -f warpstream-byoc-demo-pod.yaml`
